@@ -1,10 +1,13 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { HiOutlineArrowNarrowLeft } from "react-icons/hi";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { fetchData } from "../utils";
+import { Loader } from "../components";
+import { ThemeContext } from "../theme/ThemeContext";
 
 export default function CountryDetailsPage() {
   const { id } = useParams();
+  const { theme } = useContext(ThemeContext);
   const navigate = useNavigate();
   const [country, setCountry] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -26,7 +29,11 @@ export default function CountryDetailsPage() {
   return (
     <div>
       <button
-        className="mx-10 mt-12 flex w-36 items-center justify-center gap-2 rounded-sm bg-whiteClr px-8 py-3 text-xl font-semibold shadow-md shadow-darkBlue/30 dark:bg-darkBlue dark:text-whiteClr lg:py-2"
+        className={`mx-10 mt-12 flex w-36 items-center justify-center gap-2 rounded-sm px-8 py-3 text-xl font-semibold shadow-md shadow-darkBlue/30 lg:py-2 ${
+          theme === "dark"
+            ? "bg-darkBlue text-whiteClr"
+            : "bg-whiteClr text-darkBlue"
+        }`}
         onClick={() => navigate(-1)}
       >
         <span>
@@ -36,7 +43,7 @@ export default function CountryDetailsPage() {
       </button>
 
       {loading ? (
-        <>Loading</>
+        <Loader />
       ) : (
         <section className="mt-14 flex flex-col gap-y-8 px-4 md:mx-auto md:max-w-[700px] lg:mx-10 lg:h-[375px] lg:max-w-full lg:flex-row lg:items-center lg:gap-6">
           <div className="lg:h-[375px] lg:w-[560px] lg:flex-1 lg:pr-10">
@@ -46,7 +53,11 @@ export default function CountryDetailsPage() {
               className="drop-shadow-lg lg:h-full lg:w-full lg:object-fill"
             />
           </div>
-          <div className="flex flex-col gap-10 dark:text-whiteClr lg:flex-1 lg:gap-6 lg:pr-6">
+          <div
+            className={`flex flex-col gap-10 lg:flex-1 lg:gap-6 lg:pr-6 ${
+              theme === "dark" ? "text-whiteClr" : "text-black"
+            }`}
+          >
             <h2 className="text-3xl font-bold lg:mt-8 lg:text-2xl">
               {country?.name?.common}
             </h2>

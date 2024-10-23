@@ -7,7 +7,7 @@ import {
   Route,
 } from "react-router-dom";
 import { CountriesPage, CountryDetailsPage } from "./pages";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import PageNotFound from "./components/PageNotFund";
 
 function App() {
@@ -25,11 +25,13 @@ function HomePage({ children }) {
   const backgroundColor =
     theme === "dark" ? "hsl(209, 23%, 22%)" : "hsl(210, 9%, 95%)";
   const textColor = theme === "dark" ? "#fff" : "#000";
-  return (
-    <div style={{ backgroundColor: backgroundColor, color: textColor }}>
-      {children}
-    </div>
-  );
+
+  useEffect(() => {
+    document.body.style.background = backgroundColor;
+    document.body.style.color = textColor;
+  }, [theme]);
+
+  return <div>{children}</div>;
 }
 
 function Routing() {

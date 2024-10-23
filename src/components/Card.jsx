@@ -1,19 +1,39 @@
+import { useContext } from "react";
+import { ThemeContext } from "../theme/ThemeContext";
+
 export default function Card({ country }) {
+  const { theme } = useContext(ThemeContext);
   const { name, capital, flags, region, population } = country;
   return (
     <div
-      className="card rounded-lg mb-12 shadow-xl h-150 w-72
-      transform transition-transform duration-300 hover:scale-105 cursor-pointer"
+      className={`mx-auto flex h-[420px] max-w-[400px] cursor-pointer flex-col justify-start rounded-md drop-shadow-md md:w-[350px] lg:h-[340px] lg:w-[340px] duration-75 hover:scale-105 ${
+        theme === "dark"
+          ? "bg-darkBlue text-whiteClr"
+          : "bg-whiteClr text-darkBlue"
+      }`}
     >
-      <img
-        src={flags.svg}
-        alt={`${name.common} flag`}
-        className="rounded-t-lg h-48 w-full"
-      />
-      <h2 className="font-bold text-2xl mt-5 ml-5 mb-5">{name.common}</h2>
-      <p className="ml-5 text-xl">Population: {population.toLocaleString()}</p>
-      <p className="ml-5 text-xl">Region: {region}</p>
-      <p className="ml-5 text-xl mb-4">Capital: {capital}</p>
+      <div className="h-[200px] w-full lg:h-[170px]">
+        <img
+          src={flags.png}
+          alt={`${name.common} flag`}
+          className="h-full w-full rounded-t-md object-fill drop-shadow-md"
+        />
+      </div>
+      <div className="h-[220px] w-full p-8  lg:h-[210px] lg:py-6">
+        <h2 className="mb-4 text-xl font-bold">{name.common}</h2>
+        <p className="text-base">
+          <span className="font-semibold">Population: </span>
+          {population}
+        </p>
+        <p className="text-base">
+          <span className="font-semibold">Region: </span>
+          {region}
+        </p>
+        <p className="text-base">
+          <span className="font-semibold">Capital: </span>
+          {capital}
+        </p>
+      </div>
     </div>
   );
 }

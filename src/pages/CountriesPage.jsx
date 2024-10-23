@@ -30,7 +30,7 @@ export default function CountriesPage() {
       {loading ? (
         <Loader />
       ) : (
-        <div className="grid pt-10 gap-12 gap-y-8 md:mx-auto md:max-w-[800px] md:grid-cols-2 md:gap-x-2 lg:max-w-[1000px] lg:grid-cols-3 lg:px-14 xl:max-w-full xl:grid-cols-4 xl:gap-16 xl:px-20">
+        <div className="grid pt-10 gap-12 gap-y-8 md:mx-auto md:max-w-[800px] md:grid-cols-2 md:gap-x-2 lg:max-w-[1000px] lg:grid-cols-2 lg:px-14 xl:max-w-full xl:grid-cols-4 xl:gap-16 xl:px-20">
           {countries.map((data, index) => (
             <Link to={`/country/${data.cca3}`} key={index}>
               <Card country={data} />

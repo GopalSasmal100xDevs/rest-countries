@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { ThemeContext } from "../theme/ThemeContext";
 import { FaRegMoon } from "react-icons/fa";
 import { AiOutlineSun } from "react-icons/ai";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
   const { theme, toggleTheme } = useContext(ThemeContext);
@@ -9,7 +10,7 @@ export default function Navbar() {
   return (
     <header className="flex justify-between items-center w-full mb-2 p-5 shadow-lg">
       <h2 className="text-xl font-bold mt-6 pl-4 lg:text-2xl mb-4 lg:ml-32">
-        Where in the world?
+        <Link to={"/"}>Where in the world?</Link>
       </h2>
       <button
         onClick={toggleTheme}
