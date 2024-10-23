@@ -36,7 +36,6 @@ export function filtersCountries({
   subregion = "",
   setCountries,
 }) {
-  console.log(search, region, subregion);
   const res = countries.filter((country) => {
     const isNameMatch = country?.name?.common
       ?.toLowerCase()
@@ -57,7 +56,7 @@ export function filtersCountries({
 
 export function getCountriesLess(countries, setCountries) {
   const res = countries.reduce(
-    (acc, { name, capital, flags, region, population, cca3 }) => {
+    (acc, { name, capital, flags, region, population, cca3, area }) => {
       acc = [
         ...acc,
         {
@@ -67,6 +66,7 @@ export function getCountriesLess(countries, setCountries) {
           region,
           population,
           cca3,
+          area,
         },
       ];
       return acc;
@@ -74,4 +74,25 @@ export function getCountriesLess(countries, setCountries) {
     []
   );
   setCountries(res);
+}
+
+export function sortCountries({ sortCriteria, countries = [], setCountries }) {
+  console.log(countries.length);
+
+  const res = countries.sort((a, b) => {
+    if (sortCriteria === "areaAsc") {
+      return parseInt(a.area) - parseInt(b.area);
+    } else if (sortCriteria === "areaDsc") {
+      return parseInt(b.area) - parseInt(a.area);
+    } else if (sortCriteria === "populationAsc") {
+      return parseInt(a.population) - parseInt(b.population);
+    } else if (sortCriteria === "populationDsc") {
+      return parseInt(b.population) - parseInt(a.population);
+    } else {
+      return 0;
+    }
+  });
+
+  if (setCountries) setCountries(res);
+  return res;
 }

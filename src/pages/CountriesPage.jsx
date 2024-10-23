@@ -18,7 +18,13 @@ export default function CountriesPage() {
   const [sortCriteria, setSortCriteria] = useState("");
 
   const regions = getRegion(rawCountriesData);
-  const subregions = getSubRegions(rawCountriesData);
+  const subregions = getSubRegions(countries);
+
+  function handelRegionChange(region) {
+    setRegion(region);
+    setSubRegion("");
+    setSortCriteria("");
+  }
 
   useEffect(() => {
     fetchData("https://restcountries.com/v3.1/all")
@@ -48,6 +54,7 @@ export default function CountriesPage() {
         subregions={subregions}
         setSubRegion={setSubRegion}
         setSortCriteria={setSortCriteria}
+        sortCriteria={sortCriteria}
       />
       {loading ? (
         <Loader />
