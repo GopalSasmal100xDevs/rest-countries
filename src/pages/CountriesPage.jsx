@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { FilterSearchControls, Card, Loader } from "../components";
-import { fetchData, getCountriesLess, getRegion } from "../utils";
+import {
+  fetchData,
+  getCountriesLess,
+  getRegion,
+  getSubRegions,
+} from "../utils";
 import { Link } from "react-router-dom";
 
 export default function CountriesPage() {
@@ -8,8 +13,12 @@ export default function CountriesPage() {
   const [countries, setCountries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [region, setRegion] = useState("");
+  const [subregion, setSubRegion] = useState("");
+  const [sortCriteria, setSortCriteria] = useState("");
 
   const regions = getRegion(rawCountriesData);
+  const subregions = getSubRegions(rawCountriesData);
 
   useEffect(() => {
     fetchData("https://restcountries.com/v3.1/all")
@@ -26,7 +35,20 @@ export default function CountriesPage() {
 
   return (
     <div>
-      <FilterSearchControls />
+      <FilterSearchControls
+        rawCountriesData={rawCountriesData}
+        countries={countries}
+        search={search}
+        setCountries={setCountries}
+        setSearch={setSearch}
+        allRegions={regions}
+        region={region}
+        setRegion={setRegion}
+        subregion={subregion}
+        subregions={subregions}
+        setSubRegion={setSubRegion}
+        setSortCriteria={setSortCriteria}
+      />
       {loading ? (
         <Loader />
       ) : (
