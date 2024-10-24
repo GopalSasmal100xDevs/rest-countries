@@ -29,7 +29,7 @@ function HomePage({ children }) {
   useEffect(() => {
     document.body.style.background = backgroundColor;
     document.body.style.color = textColor;
-  }, [theme]);
+  }, [theme, backgroundColor, textColor]);
 
   return <div>{children}</div>;
 }
