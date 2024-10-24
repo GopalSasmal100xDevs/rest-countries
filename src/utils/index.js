@@ -18,9 +18,9 @@ export function getRegion(countries = []) {
   return Array.from(new Set(res));
 }
 
-export function getSubRegions(countries = [], setSuborigins) {
+export function getSubRegions(countries = []) {
   const res = countries.map(({ subregion }) => subregion);
-  setSuborigins(Array.from(new Set(res)));
+  return Array.from(new Set(res));
 }
 
 export function filtersCountries({
@@ -28,9 +28,8 @@ export function filtersCountries({
   search = "",
   region = "",
   subregion = "",
-  setCountries,
 }) {
-  const res = countries.filter((country) => {
+  return countries.filter((country) => {
     const isNameMatch = country?.name?.common
       ?.toLowerCase()
       .includes(search.trim().toLowerCase());
@@ -44,8 +43,6 @@ export function filtersCountries({
 
     return isNameMatch && isRegionMatch && isSubRegionMatch;
   });
-  if (setCountries) setCountries(res);
-  return res;
 }
 
 export function getCountriesLess(countries, setCountries) {
@@ -70,34 +67,20 @@ export function getCountriesLess(countries, setCountries) {
   setCountries(res);
 }
 
-export function sortCountries({ sortCriteria, countries = [], setCountries }) {
-  switch (sortCriteria) {
-    case "areaAsc": {
-      const res = [...countries];
-      res.sort((a, b) => parseInt(a.area) - parseInt(b.area));
-      setCountries(res);
-      break;
+export function sortCountries({ sortCriteria, countries = [] }) {
+  return countries.sort((a, b) => {
+    switch (sortCriteria) {
+      case "areaAsc":
+        return parseInt(a.area) - parseInt(b.area);
+      case "areaDsc":
+        return parseInt(b.area) - parseInt(a.area);
+      case "populationAsc":
+        return parseInt(a.population) - parseInt(b.population);
+
+      case "populationDsc":
+        return parseInt(b.population) - parseInt(a.population);
+      default:
+        return 0;
     }
-    case "areaDsc": {
-      const res = [...countries];
-      res.sort((a, b) => parseInt(b.area) - parseInt(a.area));
-      setCountries(res);
-      break;
-    }
-    case "populationAsc": {
-      const res = [...countries];
-      res.sort((a, b) => parseInt(a.population) - parseInt(b.population));
-      setCountries(res);
-      break;
-    }
-    case "populationDsc": {
-      const res = [...countries];
-      res.sort((a, b) => parseInt(b.population) - parseInt(a.population));
-      setCountries(res);
-      break;
-    }
-    default: {
-      setCountries([...countries]);
-    }
-  }
+  });
 }

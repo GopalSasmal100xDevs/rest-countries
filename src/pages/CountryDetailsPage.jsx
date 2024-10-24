@@ -17,12 +17,12 @@ export default function CountryDetailsPage() {
     fetch(`https://restcountries.com/v3.1/alpha/${id}`)
       .then((res) => res.json())
       .then((data) => {
-        if (data.status == 404) navigate("/error");
+        if (data.status === 404 || data.status === 400) navigate("/error");
         setCountry(data[0]);
       })
       .catch((err) => {
+        if (err.status === 404 || err.status === 400) navigate("/error");
         console.log(err);
-        if (err.status === 404) navigate("/error");
       })
       .finally(() => {
         setLoading(false);
