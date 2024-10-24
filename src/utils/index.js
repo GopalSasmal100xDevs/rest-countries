@@ -9,18 +9,18 @@ export async function fetchData(url) {
 }
 
 export function getRegion(countries = []) {
-  const res = countries.reduce((acc, country) => {
-    if (country.region) {
-      acc = [...acc, country.region];
-    }
-    return acc;
-  }, []);
-  return Array.from(new Set(res));
+  const res = countries.map(({ region }) => region);
+  return Array.from(new Set(res)).map((value) => ({ value, title: value }));
 }
 
-export function getSubRegions(countries = []) {
-  const res = countries.map(({ subregion }) => subregion);
-  return Array.from(new Set(res));
+export function getSubRegions(countries = [], selectedRegion) {
+  const res = countries
+    .map(({ region, subregion }) => {
+      if (selectedRegion === "") return subregion;
+      else if (selectedRegion === region) return subregion;
+    })
+    .filter((subregion) => subregion !== undefined);
+  return Array.from(new Set(res)).map((value) => ({ value, title: value }));
 }
 
 export function filtersCountries({
@@ -70,14 +70,14 @@ export function getCountriesLess(countries, setCountries) {
 export function sortCountries({ sortCriteria, countries = [] }) {
   return countries.sort((a, b) => {
     switch (sortCriteria) {
-      case "areaAsc":
+      case "areaASC":
         return parseInt(a.area) - parseInt(b.area);
-      case "areaDsc":
+      case "areaDSC":
         return parseInt(b.area) - parseInt(a.area);
-      case "populationAsc":
+      case "populationASC":
         return parseInt(a.population) - parseInt(b.population);
 
-      case "populationDsc":
+      case "populationDSC":
         return parseInt(b.population) - parseInt(a.population);
       default:
         return 0;

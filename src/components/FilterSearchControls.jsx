@@ -56,17 +56,17 @@ export default function FilterSearchControls({
         </div>
 
         <div className="mt-5 ml-4">
-          <select
-            name="sort"
-            className={`h-10 w-40 rounded-lg shadow-lg lg:w-44 ${backgroundColor} ${color}`}
+          <SelectItems
+            options={[
+              { value: "areaASC", title: "Area (Ascending)" },
+              { value: "areaDSC", title: "Area (Descending)" },
+              { value: "populationASC", title: "Population (Ascending)" },
+              { value: "populationDSC", title: "Population (Descending)" },
+            ]}
             onChange={(e) => setSortCriteria(e.target.value)}
-          >
-            <option value="">Sort by</option>
-            <option value="areaAsc">Area (Ascending)</option>
-            <option value="areaDsc">Area (Descending)</option>
-            <option value="populationAsc">Population (Ascending)</option>
-            <option value="populationDsc">Population (Descending)</option>
-          </select>
+            placeholder="Sort by"
+            className="rounded-lg shadow-lg"
+          />
         </div>
       </div>
     </div>

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { FilterSearchControls, Card, Loader } from "../components";
 import {
-  fetchData,
   filtersCountries,
   getRegion,
   getSubRegions,
@@ -21,6 +20,25 @@ export default function CountriesPage() {
   const navigate = useNavigate();
   const regions = getRegion(countries);
 
+  const subregions = getSubRegions(countries, region);
+
+  function changeRegion(region) {
+    setRegion(region);
+    setSubRegion("");
+    setSortCriteria("");
+  }
+
+  const filterCountries = filtersCountries({
+    countries,
+    region,
+    search,
+    subregion,
+  });
+  const sortedFilteredCountries = sortCountries({
+    countries: filterCountries,
+    sortCriteria,
+  });
+
   useEffect(() => {
     fetch("https://restcountries.com/v3.1/all")
       .then((res) => res.json())
@@ -36,26 +54,13 @@ export default function CountriesPage() {
       });
   }, []);
 
-  const subregions = getSubRegions(countries);
-
-  const filterCountries = filtersCountries({
-    countries,
-    region,
-    search,
-    subregion,
-  });
-  const sortedFilteredCountries = sortCountries({
-    countries: filterCountries,
-    sortCriteria,
-  });
-
   return (
     <div>
       <FilterSearchControls
         search={search}
         setSearch={setSearch}
         allRegions={regions}
-        setRegion={setRegion}
+        setRegion={changeRegion}
         subregions={subregions}
         setSubRegion={setSubRegion}
         setSortCriteria={setSortCriteria}
