@@ -3,7 +3,6 @@ import SelectItems from "./SelectItems";
 import { useContext, useEffect } from "react";
 import { ThemeContext } from "../theme/ThemeContext";
 import { filtersCountries, sortCountries } from "../utils";
-import { useDebounce } from "use-debounce";
 
 export default function FilterSearchControls({
   rawCountriesData,
@@ -23,7 +22,6 @@ export default function FilterSearchControls({
   const { theme } = useContext(ThemeContext);
   const backgroundColor = theme === "dark" ? "bg-darkBlue" : "bg-whiteClr";
   const color = theme === "dark" ? "text-whiteClr" : "text-darkBlue";
-  const [searchText] = useDebounce(search, 100);
 
   useEffect(() => {
     filtersCountries({
@@ -33,7 +31,7 @@ export default function FilterSearchControls({
       subregion,
       setCountries,
     });
-  }, [filtersCountries, searchText, region, subregion, setCountries]);
+  }, [filtersCountries, search, region, subregion, setCountries]);
 
   useEffect(() => {
     sortCountries({ sortCriteria, countries, setCountries });

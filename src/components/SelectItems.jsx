@@ -15,11 +15,13 @@ export default function SelectItems({ name, onChange, placeholder, options }) {
     >
       <option value="">{placeholder}</option>
 
-      {options.map((option, index) => (
-        <option key={index} value={option} className="cursor-pointer">
-          {option}
-        </option>
-      ))}
+      {options.map((option, index) =>
+        option ? (
+          <option key={index} value={option} className="cursor-pointer">
+            {option}
+          </option>
+        ) : null
+      )}
     </select>
   );
 }

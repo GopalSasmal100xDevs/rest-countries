@@ -18,15 +18,9 @@ export function getRegion(countries = []) {
   return Array.from(new Set(res));
 }
 
-export function getSubRegions(countries = []) {
-  const res = countries.reduce((acc, country) => {
-    if (country.subregion) {
-      acc = [...acc, country.subregion];
-    }
-    return acc;
-  }, []);
-
-  return Array.from(new Set(res));
+export function getSubRegions(countries = [], setSuborigins) {
+  const res = countries.map(({ subregion }) => subregion);
+  setSuborigins(Array.from(new Set(res)));
 }
 
 export function filtersCountries({

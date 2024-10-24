@@ -1,11 +1,6 @@
 import { useEffect, useState } from "react";
 import { FilterSearchControls, Card, Loader } from "../components";
-import {
-  fetchData,
-  getCountriesLess,
-  getRegion,
-  getSubRegions,
-} from "../utils";
+import { fetchData, getRegion, getSubRegions } from "../utils";
 import { Link } from "react-router-dom";
 
 export default function CountriesPage() {
@@ -16,28 +11,27 @@ export default function CountriesPage() {
   const [region, setRegion] = useState("");
   const [subregion, setSubRegion] = useState("");
   const [sortCriteria, setSortCriteria] = useState("");
+  const [subregions, setSuborigins] = useState([]);
 
-  const regions = getRegion(rawCountriesData);
-  const subregions = getSubRegions(countries);
-
-  function handelRegionChange(region) {
-    setRegion(region);
-    setSubRegion("");
-    setSortCriteria("");
-  }
+  const regions = getRegion(countries);
 
   useEffect(() => {
     fetchData("https://restcountries.com/v3.1/all")
-      .then((data) => setRawCountriesData(data))
+      .then((data) => {
+        setCountries(data);
+        setRawCountriesData(data);
+      })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, []);
 
   useEffect(() => {
-    getCountriesLess(rawCountriesData, setCountries);
-    setLoading(false);
-  }, [rawCountriesData, setCountries, setLoading]);
+    getSubRegions(countries, setSuborigins);
+  }, [getSubRegions, countries, setSuborigins]);
 
   return (
     <div>

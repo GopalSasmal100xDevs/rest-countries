@@ -1,10 +1,9 @@
 import { useContext, useEffect, useState } from "react";
 import { HiOutlineArrowNarrowLeft } from "react-icons/hi";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { fetchData } from "../utils";
 import { Loader } from "../components";
 import { ThemeContext } from "../theme/ThemeContext";
-import { Helmet } from "react-helmet";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
 export default function CountryDetailsPage() {
@@ -15,7 +14,8 @@ export default function CountryDetailsPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchData(`https://restcountries.com/v3.1/alpha/${id}`)
+    fetch(`https://restcountries.com/v3.1/alpha/${id}`)
+      .then((res) => res.json())
       .then((data) => {
         if (data.status == 404) navigate("/error");
         setCountry(data[0]);
@@ -49,9 +49,11 @@ export default function CountryDetailsPage() {
         <Loader />
       ) : (
         <section className="mt-14 flex flex-col gap-y-8 px-4 md:mx-auto md:max-w-[700px] lg:mx-10 lg:h-[375px] lg:max-w-full lg:flex-row lg:items-center lg:gap-6">
-          <Helmet>
-            <title>Country | {country?.name?.common}</title>
-          </Helmet>
+          <HelmetProvider>
+            <Helmet>
+              <title>Country | {country?.name?.common}</title>
+            </Helmet>
+          </HelmetProvider>
 
           <div className="lg:h-[375px] lg:w-[60px] lg:flex-1 lg:pr-10">
             <LazyLoadImage
