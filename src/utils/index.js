@@ -9,24 +9,18 @@ export async function fetchData(url) {
 }
 
 export function getRegion(countries = []) {
-  const res = countries.reduce((acc, country) => {
-    if (country.region) {
-      acc = [...acc, country.region];
-    }
-    return acc;
-  }, []);
-  return Array.from(new Set(res));
+  const res = countries.map(({ region }) => region);
+  return Array.from(new Set(res)).map((value) => ({ value, title: value }));
 }
 
-export function getSubRegions(countries = []) {
-  const res = countries.reduce((acc, country) => {
-    if (country.subregion) {
-      acc = [...acc, country.subregion];
-    }
-    return acc;
-  }, []);
-
-  return Array.from(new Set(res));
+export function getSubRegions(countries = [], selectedRegion) {
+  const res = countries
+    .map(({ region, subregion }) => {
+      if (selectedRegion === "") return subregion;
+      else if (selectedRegion === region) return subregion;
+    })
+    .filter((subregion) => subregion !== undefined);
+  return Array.from(new Set(res)).map((value) => ({ value, title: value }));
 }
 
 export function filtersCountries({
@@ -34,12 +28,11 @@ export function filtersCountries({
   search = "",
   region = "",
   subregion = "",
-  setCountries,
 }) {
-  const res = countries.filter((country) => {
+  return countries.filter((country) => {
     const isNameMatch = country?.name?.common
       ?.toLowerCase()
-      .includes(search.toLowerCase());
+      .includes(search.trim().toLowerCase());
 
     const isRegionMatch =
       region === "" || country?.region.toLowerCase() === region.toLowerCase();
@@ -50,8 +43,6 @@ export function filtersCountries({
 
     return isNameMatch && isRegionMatch && isSubRegionMatch;
   });
-  if (setCountries) setCountries(res);
-  return res;
 }
 
 export function getCountriesLess(countries, setCountries) {
@@ -76,23 +67,20 @@ export function getCountriesLess(countries, setCountries) {
   setCountries(res);
 }
 
-export function sortCountries({ sortCriteria, countries = [], setCountries }) {
-  console.log(countries.length);
+export function sortCountries({ sortCriteria, countries = [] }) {
+  return countries.sort((a, b) => {
+    switch (sortCriteria) {
+      case "areaASC":
+        return parseInt(a.area) - parseInt(b.area);
+      case "areaDSC":
+        return parseInt(b.area) - parseInt(a.area);
+      case "populationASC":
+        return parseInt(a.population) - parseInt(b.population);
 
-  const res = countries.sort((a, b) => {
-    if (sortCriteria === "areaAsc") {
-      return parseInt(a.area) - parseInt(b.area);
-    } else if (sortCriteria === "areaDsc") {
-      return parseInt(b.area) - parseInt(a.area);
-    } else if (sortCriteria === "populationAsc") {
-      return parseInt(a.population) - parseInt(b.population);
-    } else if (sortCriteria === "populationDsc") {
-      return parseInt(b.population) - parseInt(a.population);
-    } else {
-      return 0;
+      case "populationDSC":
+        return parseInt(b.population) - parseInt(a.population);
+      default:
+        return 0;
     }
   });
-
-  if (setCountries) setCountries(res);
-  return res;
 }
