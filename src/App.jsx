@@ -40,6 +40,7 @@ function Routing() {
       <Route path="/" element={<MainLayout />}>
         <Route path="/" index element={<CountriesPage />} />
         <Route path="/country/:id" element={<CountryDetailsPage />} />
+        <Route path="/error" element={<PageNotFound />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>
     )

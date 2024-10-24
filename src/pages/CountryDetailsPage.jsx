@@ -4,22 +4,25 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { fetchData } from "../utils";
 import { Loader } from "../components";
 import { ThemeContext } from "../theme/ThemeContext";
+import { Helmet } from "react-helmet";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 export default function CountryDetailsPage() {
   const { id } = useParams();
   const { theme } = useContext(ThemeContext);
   const navigate = useNavigate();
-  const [country, setCountry] = useState([]);
+  const [country, setCountry] = useState({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchData(`https://restcountries.com/v3.1/alpha/${id}`)
       .then((data) => {
+        if (data.status == 404) navigate("/error");
         setCountry(data[0]);
       })
       .catch((err) => {
         console.log(err);
-        navigate("/error");
+        if (err.status === 404) navigate("/error");
       })
       .finally(() => {
         setLoading(false);
@@ -46,8 +49,12 @@ export default function CountryDetailsPage() {
         <Loader />
       ) : (
         <section className="mt-14 flex flex-col gap-y-8 px-4 md:mx-auto md:max-w-[700px] lg:mx-10 lg:h-[375px] lg:max-w-full lg:flex-row lg:items-center lg:gap-6">
-          <div className="lg:h-[375px] lg:w-[560px] lg:flex-1 lg:pr-10">
-            <img
+          <Helmet>
+            <title>Country | {country?.name?.common}</title>
+          </Helmet>
+
+          <div className="lg:h-[375px] lg:w-[60px] lg:flex-1 lg:pr-10">
+            <LazyLoadImage
               src={country?.flags?.svg}
               alt={`${country?.name?.common} Flag`}
               className="drop-shadow-lg lg:h-full lg:w-full lg:object-fill"
@@ -81,11 +88,11 @@ export default function CountryDetailsPage() {
                 </p>
                 <p>
                   <span className="font-bold">Sub Region: </span>
-                  {country?.subregion}
+                  {country.subregion ? country.subregion : "No Subregion"}
                 </p>
                 <p>
                   <span className="font-bold">Capital: </span>
-                  {country?.capital}
+                  {country.capital ? country.capital : "No Capital"}
                 </p>
               </div>
             </div>
@@ -100,11 +107,16 @@ export default function CountryDetailsPage() {
                     ? "Currency: "
                     : "Currencies: "}
                 </span>
-                {Object.keys(country.currencies).map((curr, index) => (
-                  <span className="" key={index}>
-                    {country?.currencies[curr].name}
-                  </span>
-                ))}
+
+                {country.currencies ? (
+                  <>
+                    {Object.keys(country?.currencies)
+                      .map((curr) => country?.currencies[curr].name)
+                      .join(", ")}
+                  </>
+                ) : (
+                  <>No Currency</>
+                )}
               </p>
               <p className="flex gap-3">
                 <span className="font-bold inline">

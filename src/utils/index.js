@@ -39,7 +39,7 @@ export function filtersCountries({
   const res = countries.filter((country) => {
     const isNameMatch = country?.name?.common
       ?.toLowerCase()
-      .includes(search.toLowerCase());
+      .includes(search.trim().toLowerCase());
 
     const isRegionMatch =
       region === "" || country?.region.toLowerCase() === region.toLowerCase();
@@ -77,22 +77,33 @@ export function getCountriesLess(countries, setCountries) {
 }
 
 export function sortCountries({ sortCriteria, countries = [], setCountries }) {
-  console.log(countries.length);
-
-  const res = countries.sort((a, b) => {
-    if (sortCriteria === "areaAsc") {
-      return parseInt(a.area) - parseInt(b.area);
-    } else if (sortCriteria === "areaDsc") {
-      return parseInt(b.area) - parseInt(a.area);
-    } else if (sortCriteria === "populationAsc") {
-      return parseInt(a.population) - parseInt(b.population);
-    } else if (sortCriteria === "populationDsc") {
-      return parseInt(b.population) - parseInt(a.population);
-    } else {
-      return 0;
+  switch (sortCriteria) {
+    case "areaAsc": {
+      const res = [...countries];
+      res.sort((a, b) => parseInt(a.area) - parseInt(b.area));
+      setCountries(res);
+      break;
     }
-  });
-
-  if (setCountries) setCountries(res);
-  return res;
+    case "areaDsc": {
+      const res = [...countries];
+      res.sort((a, b) => parseInt(b.area) - parseInt(a.area));
+      setCountries(res);
+      break;
+    }
+    case "populationAsc": {
+      const res = [...countries];
+      res.sort((a, b) => parseInt(a.population) - parseInt(b.population));
+      setCountries(res);
+      break;
+    }
+    case "populationDsc": {
+      const res = [...countries];
+      res.sort((a, b) => parseInt(b.population) - parseInt(a.population));
+      setCountries(res);
+      break;
+    }
+    default: {
+      setCountries([...countries]);
+    }
+  }
 }

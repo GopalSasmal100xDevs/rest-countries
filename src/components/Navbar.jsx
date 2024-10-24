@@ -8,7 +8,7 @@ export default function Navbar() {
   const { theme, toggleTheme } = useContext(ThemeContext);
 
   return (
-    <header className="flex justify-between items-center w-full mb-2 p-5 shadow-lg">
+    <header className="flex justify-between items-center w-full mb-2 p-2 shadow-lg">
       <h2 className="text-xl font-bold mt-6 pl-4 lg:text-2xl mb-4 lg:ml-32">
         <Link to={"/"}>Where in the world?</Link>
       </h2>

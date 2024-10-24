@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { ThemeContext } from "../theme/ThemeContext";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 export default function Card({ country }) {
   const { theme } = useContext(ThemeContext);
@@ -13,7 +14,7 @@ export default function Card({ country }) {
       }`}
     >
       <div className="h-[200px] w-full lg:h-[170px]">
-        <img
+        <LazyLoadImage
           src={flags.png}
           alt={`${name.common} flag`}
           className="h-full w-full rounded-t-md object-fill drop-shadow-md"
