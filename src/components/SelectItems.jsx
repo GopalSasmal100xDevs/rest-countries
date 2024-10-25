@@ -5,25 +5,23 @@ export default function SelectItems({ name, onChange, placeholder, options }) {
   const { theme } = useContext(ThemeContext);
   const backgroundColor = theme === "dark" ? "bg-darkBlue" : "bg-whiteClr";
   const color = theme === "dark" ? "text-whiteClr" : "text-darkBlue";
-  console.log(options);
 
   return (
     <>
       {options.length == 0 ? (
         <div
-          className={`flex justify-center items-center h-10 w-40 rounded-lg shadow-lg cursor-pointer lg:w-44 ${backgroundColor} ${color}`}
+          className={`flex justify-center items-center w-full border rounded-md shadow-lg mt-4 ${backgroundColor} ${color} border-none cursor-pointer p-2`}
         >
-          <p>No Subregion</p>
+          <p>No {placeholder.split(" ").at(-1)}</p>
         </div>
       ) : (
         <select
           name={name}
-          className={`h-10 w-40 rounded-lg shadow-lg cursor-pointer lg:w-44 ${backgroundColor} ${color}`}
+          className={`w-full border rounded-md shadow-lg mt-4 ${backgroundColor} ${color} border-none cursor-pointer`}
           style={{ padding: "10px" }}
           onChange={onChange}
         >
           <option value="">{placeholder}</option>
-
           {options.map(({ value, title }, index) =>
             title ? (
               <option key={index} value={value} className="cursor-pointer">

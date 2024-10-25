@@ -23,12 +23,16 @@ function App() {
 function HomePage({ children }) {
   const { theme } = useContext(ThemeContext);
   const backgroundColor =
-    theme === "dark" ? "hsl(209, 23%, 22%)" : "hsl(210, 9%, 95%)";
+    theme === "dark" ? "hsl(207, 26%, 17%)" : "hsl(0, 0%, 100%)";
   const textColor = theme === "dark" ? "#fff" : "#000";
 
-  useEffect(() => {
+  function changeTheme(backgroundColor, textColor) {
     document.body.style.background = backgroundColor;
     document.body.style.color = textColor;
+  }
+
+  useEffect(() => {
+    changeTheme(backgroundColor, textColor);
   }, [theme, backgroundColor, textColor]);
 
   return <div>{children}</div>;
