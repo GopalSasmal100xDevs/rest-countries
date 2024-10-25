@@ -17,7 +17,7 @@ export default function FilterSearchControls({
   const color = theme === "dark" ? "text-whiteClr" : "text-darkBlue";
 
   return (
-    <div className="flex flex-col lg:flex-row lg:justify-around lg:ml-2 lg:mr-1">
+    <div className="flex justify-start flex-col lg:flex-row lg:justify-between lg:ml-2 lg:mr-1 sm:flex-col lg:px-[5rem] md:px-[3rem] sm:px[1rem]">
       <div className="relative ml-4 mr-5 mt-1 lg:w-80">
         <span className="absolute left-0 top-0 flex items-center pl-3 pt-4">
           <div className={`mt-3 ${backgroundColor} ${color}`}>
@@ -35,18 +35,18 @@ export default function FilterSearchControls({
         />
       </div>
 
-      <div className="flex flex-row justify-evenly">
-        <div className="mt-5 ml-4">
+      <div className="flex flex-col gap-0 justify-evenly md:flex-row lg:flex-row sm:flex-row">
+        <div className="px-5">
           <SelectItems
             name={""}
             options={allRegions}
             onChange={(e) => setRegion(e.target.value)}
             placeholder="Filter by Region"
-            className="rounded-lg shadow-lg"
+            className="rounded-lg shadow-lg w-full"
           />
         </div>
 
-        <div className="mt-5 ml-4">
+        <div className="px-5">
           <SelectItems
             options={subregions}
             onChange={(e) => setSubRegion(e.target.value)}
@@ -55,7 +55,7 @@ export default function FilterSearchControls({
           />
         </div>
 
-        <div className="mt-5 ml-4">
+        <div className="px-5">
           <SelectItems
             options={[
               { value: "areaASC", title: "Area (Ascending)" },

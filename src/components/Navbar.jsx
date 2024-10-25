@@ -8,13 +8,17 @@ export default function Navbar() {
   const { theme, toggleTheme } = useContext(ThemeContext);
 
   return (
-    <header className="flex justify-between items-center w-full mb-2 p-2 shadow-lg">
-      <h2 className="text-xl font-bold mt-6 pl-4 lg:text-2xl mb-4 lg:ml-32">
+    <header
+      className={`flex justify-between items-center w-full shadow-lg py-3 ${
+        theme === "dark" ? "bg-darkBlue" : "bg-veryLightGray"
+      }`}
+    >
+      <h2 className="text-xl pl-4 sm:text-xl font-bold lg:text-2xl sm:pl-[7rem]">
         <Link to={"/"}>Where in the world?</Link>
       </h2>
       <button
         onClick={toggleTheme}
-        className="cursor-pointer mt-6 mr-3 py-2 px-4 rounded-lg shadow-lg mb-4 lg:mr-1"
+        className="cursor-pointer pl-4 mt-6 rounded-lg mb-4 lg:mr-1 pr-[6rem]"
       >
         {theme === "dark" ? (
           <div className="flex justify-center items-center gap-3">

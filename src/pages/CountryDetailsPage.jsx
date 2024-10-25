@@ -22,17 +22,16 @@ export default function CountryDetailsPage() {
       })
       .catch((err) => {
         if (err.status === 404 || err.status === 400) navigate("/error");
-        console.log(err);
       })
       .finally(() => {
         setLoading(false);
       });
-  }, [id]);
+  }, [navigate, id]);
 
   return (
-    <div>
+    <div className="px-[4rem] md:px-[6rem]">
       <button
-        className={`mx-10 mt-12 flex w-36 items-center justify-center gap-2 rounded-sm px-8 py-3 text-xl font-semibold shadow-md shadow-darkBlue/30 lg:py-2 ${
+        className={`mx-12 mt-12 flex w-36 items-center justify-center gap-2 rounded-sm py-3 text-xl font-semibold shadow-md shadow-darkBlue/30 lg:py-2 ${
           theme === "dark"
             ? "bg-darkBlue text-whiteClr"
             : "bg-whiteClr text-darkBlue"
@@ -70,68 +69,70 @@ export default function CountryDetailsPage() {
             <h2 className="text-3xl font-bold lg:mt-8 lg:text-2xl">
               {country?.name?.common}
             </h2>
-            <div className="md:flex md:items-start md:justify-between">
-              <div className="flex-col gap-2 text-lg md:flex lg:text-sm">
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-3">
+              <div className="md:flex md:items-start md:justify-between self-start">
+                <div className="flex-col gap-2 text-lg md:flex lg:text-sm">
+                  <p>
+                    <span className="font-bold">Native Name: </span>
+                    {
+                      country?.name?.nativeName[
+                        Object.keys(country?.name?.nativeName)[0]
+                      ].common
+                    }
+                  </p>
+                  <p>
+                    <span className="font-bold">Population: </span>
+                    {country?.population}
+                  </p>
+                  <p>
+                    <span className="font-bold">Region: </span>
+                    {country?.region}
+                  </p>
+                  <p>
+                    <span className="font-bold">Sub Region: </span>
+                    {country.subregion ? country.subregion : "No Subregion"}
+                  </p>
+                  <p>
+                    <span className="font-bold">Capital: </span>
+                    {country.capital ? country.capital : "No Capital"}
+                  </p>
+                </div>
+              </div>
+              <div className="flex-col gap-2 text-lg md:flex lg:text-sm self-start">
                 <p>
-                  <span className="font-bold">Native Name: </span>
-                  {
-                    country?.name?.nativeName[
-                      Object.keys(country?.name?.nativeName)[0]
-                    ].common
-                  }
+                  <span className="font-bold">Top Level Domain: </span>
+                  {country?.tld}
                 </p>
                 <p>
-                  <span className="font-bold">Population: </span>
-                  {country?.population}
+                  <span className="font-bold">
+                    {country?.currencies?.keys?.length === 1
+                      ? "Currency: "
+                      : "Currencies: "}
+                  </span>
+
+                  {country.currencies ? (
+                    <>
+                      {Object.keys(country?.currencies)
+                        .map((curr) => country?.currencies[curr].name)
+                        .join(", ")}
+                    </>
+                  ) : (
+                    <>No Currency</>
+                  )}
                 </p>
-                <p>
-                  <span className="font-bold">Region: </span>
-                  {country?.region}
-                </p>
-                <p>
-                  <span className="font-bold">Sub Region: </span>
-                  {country.subregion ? country.subregion : "No Subregion"}
-                </p>
-                <p>
-                  <span className="font-bold">Capital: </span>
-                  {country.capital ? country.capital : "No Capital"}
+                <p className="flex gap-3">
+                  <span className="font-bold inline">
+                    {country?.languages?.keys?.length === 1
+                      ? "Language: "
+                      : "Languages: "}
+                  </span>
+                  <span className="flex gap-3">
+                    {Object.keys(country?.languages).map((lang, index) => (
+                      <span key={index}>{country?.languages[lang]}</span>
+                    ))}
+                  </span>
                 </p>
               </div>
-            </div>
-            <div className="flex-col gap-2 text-lg md:flex lg:text-sm">
-              <p>
-                <span className="font-bold">Top Level Domain: </span>
-                {country?.tld}
-              </p>
-              <p>
-                <span className="font-bold">
-                  {country?.currencies?.keys?.length === 1
-                    ? "Currency: "
-                    : "Currencies: "}
-                </span>
-
-                {country.currencies ? (
-                  <>
-                    {Object.keys(country?.currencies)
-                      .map((curr) => country?.currencies[curr].name)
-                      .join(", ")}
-                  </>
-                ) : (
-                  <>No Currency</>
-                )}
-              </p>
-              <p className="flex gap-3">
-                <span className="font-bold inline">
-                  {country?.languages?.keys?.length === 1
-                    ? "Language: "
-                    : "Languages: "}
-                </span>
-                <span className="flex gap-3">
-                  {Object.keys(country?.languages).map((lang, index) => (
-                    <span key={index}>{country?.languages[lang]}</span>
-                  ))}
-                </span>
-              </p>
             </div>
 
             <div className="mb-10 flex flex-col gap-6">
@@ -147,7 +148,11 @@ export default function CountryDetailsPage() {
                         to={`/country/${border}`}
                         key={border}
                         state={border}
-                        className="bg-slate-300 text-gray-800 px-6 py-2 drop-shadow-lg sm:px-10 lg:py-1 lg:px-4 rounded-sm"
+                        className={`px-6 py-2 drop-shadow-lg sm:px-10 lg:py-1 lg:px-4 rounded-sm ${
+                          theme === "dark"
+                            ? "bg-darkBlue text-whiteClr"
+                            : "bg-whiteClr text-darkBlue"
+                        }`}
                       >
                         {border}
                       </Link>

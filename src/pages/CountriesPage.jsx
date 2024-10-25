@@ -15,7 +15,6 @@ export default function CountriesPage() {
   const [region, setRegion] = useState("");
   const [subregion, setSubRegion] = useState("");
   const [sortCriteria, setSortCriteria] = useState("");
-  const [_error, setError] = useState(null);
 
   const navigate = useNavigate();
   const regions = getRegion(countries);
@@ -45,14 +44,13 @@ export default function CountriesPage() {
       .then((data) => {
         setCountries(data);
       })
-      .catch((err) => {
-        setError(err);
+      .catch(() => {
         navigate("/error");
       })
       .finally(() => {
         setLoading(false);
       });
-  }, []);
+  }, [navigate]);
 
   return (
     <div>
@@ -74,7 +72,7 @@ export default function CountriesPage() {
               <p className="text-3xl">`{search}` | No Search Results!</p>
             </div>
           ) : (
-            <div className="grid pt-10 gap-12 gap-y-8 md:mx-auto md:max-w-[800px] md:grid-cols-2 md:gap-x-2 lg:max-w-[1000px] lg:grid-cols-2 lg:px-14 xl:max-w-full xl:grid-cols-4 xl:gap-16 xl:px-20">
+            <div className="grid pt-10 gap-12 md:grid-cols-2 md:gap-5 lg:grid-cols-3 lg:gap-10 xl:max-w-full xl:grid-cols-4 xl:gap-16 lg:px-[5rem] md:px-[3rem] sm:px[1rem]">
               {sortedFilteredCountries.map((data, index) => (
                 <Link to={`/country/${data.cca3}`} key={index}>
                   <Card country={data} />
