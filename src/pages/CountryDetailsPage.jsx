@@ -30,143 +30,151 @@ export default function CountryDetailsPage() {
 
   return (
     <div className="px-[4rem] md:px-[6rem]">
-      <button
-        className={`mx-12 mt-12 flex w-36 items-center justify-center gap-2 rounded-sm py-3 text-xl font-semibold shadow-md shadow-darkBlue/30 lg:py-2 ${
-          theme === "dark"
-            ? "bg-darkBlue text-whiteClr"
-            : "bg-whiteClr text-darkBlue"
-        }`}
-        onClick={() => navigate(-1)}
-      >
-        <span>
-          <HiOutlineArrowNarrowLeft size={28} />
-        </span>
-        <span>Back</span>
-      </button>
-
       {loading ? (
         <Loader />
       ) : (
-        <section className="mt-14 flex flex-col gap-y-8 px-4 md:mx-auto md:max-w-[700px] lg:mx-10 lg:h-[375px] lg:max-w-full lg:flex-row lg:items-center lg:gap-6">
+        <>
           <HelmetProvider>
             <Helmet>
-              <title>Country | {country?.name?.common}</title>
+              <title>Country | {country.name?.common}</title>
             </Helmet>
           </HelmetProvider>
 
-          <div className="lg:h-[375px] lg:w-[60px] lg:flex-1 lg:pr-10">
-            <LazyLoadImage
-              src={country?.flags?.svg}
-              alt={`${country?.name?.common} Flag`}
-              className="drop-shadow-lg lg:h-full lg:w-full lg:object-fill"
-            />
-          </div>
-          <div
-            className={`flex flex-col gap-10 lg:flex-1 lg:gap-6 lg:pr-6 ${
-              theme === "dark" ? "text-whiteClr" : "text-black"
+          <button
+            className={`flex items-center justify-center mt-10 gap-2 rounded-sm text-xl font-semibold shadow-md shadow-darkBlue/30 px-7 py-3 ${
+              theme === "dark"
+                ? "bg-darkBlue text-whiteClr"
+                : "bg-whiteClr text-darkBlue"
             }`}
+            onClick={() => navigate(-1)}
           >
-            <h2 className="text-3xl font-bold lg:mt-8 lg:text-2xl">
-              {country?.name?.common}
-            </h2>
-            <div className="flex flex-col sm:flex-row justify-between items-center gap-3">
-              <div className="md:flex md:items-start md:justify-between self-start">
-                <div className="flex-col gap-2 text-lg md:flex lg:text-sm">
+            <span>
+              <HiOutlineArrowNarrowLeft size={28} />
+            </span>
+            <span>Back</span>
+          </button>
+
+          <section className="flex flex-col lg:flex-row mt-20 gap-12">
+            <div className="lg:max-w-[40%] lg:h-auto flex-shrink-1 lg:flex-1 lg:pr-10">
+              <LazyLoadImage
+                src={country.flags?.svg}
+                alt={`${country.name?.common} Flag`}
+                className="drop-shadow-lg lg:h-full lg:w-full lg:object-fill"
+              />
+            </div>
+            <div
+              className={`flex flex-col gap-10 lg:flex-1 lg:gap-6 lg:pr-6 ${
+                theme === "dark" ? "text-whiteClr" : "text-black"
+              }`}
+            >
+              <h2 className="text-3xl font-bold lg:mt-8 lg:text-2xl">
+                {country.name?.common}
+              </h2>
+              <div className="max-w-[80%] flex flex-col sm:flex-col md:flex-row justify-between items-center gap-3">
+                <div className="md:flex md:items-start md:justify-between self-start">
+                  <div className="flex-col gap-2 text-lg md:flex lg:text-sm">
+                    <p>
+                      <span className="font-bold">Native Name: </span>
+                      {country.name?.nativeName
+                        ? country.name?.nativeName[
+                            Object.keys(country.name?.nativeName)[0]
+                          ].common
+                        : "No Native Name"}
+                    </p>
+                    <p>
+                      <span className="font-bold">Population: </span>
+                      {country.population ? country.population : 0}
+                    </p>
+                    <p>
+                      <span className="font-bold">Region: </span>
+                      {country.region ? country.region : "No Region"}
+                    </p>
+                    <p>
+                      <span className="font-bold">Sub Region: </span>
+                      {country.subregion ? country.subregion : "No Subregion"}
+                    </p>
+                    <p>
+                      <span className="font-bold">Capital: </span>
+                      {country.capital ? country.capital : "No Capital"}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex-col gap-2 text-lg md:flex lg:text-sm self-start">
                   <p>
-                    <span className="font-bold">Native Name: </span>
-                    {
-                      country?.name?.nativeName[
-                        Object.keys(country?.name?.nativeName)[0]
-                      ].common
-                    }
+                    <span className="font-bold">Top Level Domain: </span>
+                    {country.tld ? country.tld : "No Domain present"}
                   </p>
                   <p>
-                    <span className="font-bold">Population: </span>
-                    {country?.population}
+                    <span className="font-bold">
+                      {country?.currencies?.keys?.length === 1
+                        ? "Currency: "
+                        : "Currencies: "}
+                    </span>
+
+                    {country.currencies ? (
+                      Object.keys(country.currencies)
+                        .map((curr) => country?.currencies[curr].name)
+                        .join(", ")
+                    ) : (
+                      <span>No Currency</span>
+                    )}
                   </p>
-                  <p>
-                    <span className="font-bold">Region: </span>
-                    {country?.region}
-                  </p>
-                  <p>
-                    <span className="font-bold">Sub Region: </span>
-                    {country.subregion ? country.subregion : "No Subregion"}
-                  </p>
-                  <p>
-                    <span className="font-bold">Capital: </span>
-                    {country.capital ? country.capital : "No Capital"}
+                  <p className="flex gap-3">
+                    <span className="font-bold inline">
+                      {country?.languages?.keys?.length === 1
+                        ? "Language: "
+                        : "Languages: "}
+                    </span>
+                    <span className="flex gap-3 flex-wrap">
+                      {country.languages ? (
+                        <>
+                          {Object.keys(country.languages).map((lang, index) => (
+                            <span key={index}>{country?.languages[lang]}</span>
+                          ))}
+                        </>
+                      ) : (
+                        <span>No Language</span>
+                      )}
+                    </span>
                   </p>
                 </div>
               </div>
-              <div className="flex-col gap-2 text-lg md:flex lg:text-sm self-start">
-                <p>
-                  <span className="font-bold">Top Level Domain: </span>
-                  {country?.tld}
-                </p>
-                <p>
-                  <span className="font-bold">
-                    {country?.currencies?.keys?.length === 1
-                      ? "Currency: "
-                      : "Currencies: "}
-                  </span>
 
-                  {country.currencies ? (
-                    <>
-                      {Object.keys(country?.currencies)
-                        .map((curr) => country?.currencies[curr].name)
-                        .join(", ")}
-                    </>
-                  ) : (
-                    <>No Currency</>
-                  )}
-                </p>
-                <p className="flex gap-3">
-                  <span className="font-bold inline">
-                    {country?.languages?.keys?.length === 1
-                      ? "Language: "
-                      : "Languages: "}
-                  </span>
-                  <span className="flex gap-3">
-                    {Object.keys(country?.languages).map((lang, index) => (
-                      <span key={index}>{country?.languages[lang]}</span>
-                    ))}
-                  </span>
-                </p>
-              </div>
-            </div>
-
-            <div className="mb-10 flex flex-col gap-6">
-              <h2 className="text-xl font-bold lg:hidden">Border Countries:</h2>
-              <div className="flex flex-wrap gap-3 lg:text-sm">
-                <span className="hidden text-sm font-bold lg:block">
+              <div className="mb-10 flex flex-col gap-6">
+                <h2 className="text-xl font-bold lg:hidden">
                   Border Countries:
-                </span>
-                {country?.borders ? (
-                  country?.borders?.map((border) => {
-                    return (
-                      <Link
-                        to={`/country/${border}`}
-                        key={border}
-                        state={border}
-                        className={`px-6 py-2 drop-shadow-lg sm:px-10 lg:py-1 lg:px-4 rounded-sm ${
-                          theme === "dark"
-                            ? "bg-darkBlue text-whiteClr"
-                            : "bg-whiteClr text-darkBlue"
-                        }`}
-                      >
-                        {border}
-                      </Link>
-                    );
-                  })
-                ) : (
-                  <p className="-mt-4 lg:mt-0">
-                    {country?.name?.common} has no border countries.
-                  </p>
-                )}
+                </h2>
+                <div className="flex flex-wrap gap-3 lg:text-sm sm:flex-wrap">
+                  <span className="hidden text-sm font-bold lg:block">
+                    Border Countries:
+                  </span>
+                  {country?.borders ? (
+                    country?.borders?.map((border) => {
+                      return (
+                        <Link
+                          to={`/country/${border}`}
+                          key={border}
+                          state={border}
+                          className={`px-6 py-2 drop-shadow-lg sm:px-10 lg:py-1 lg:px-4 rounded-sm ${
+                            theme === "dark"
+                              ? "bg-darkBlue text-whiteClr"
+                              : "bg-whiteClr text-darkBlue"
+                          }`}
+                        >
+                          {border}
+                        </Link>
+                      );
+                    })
+                  ) : (
+                    <p className="-mt-4 lg:mt-0">
+                      {country?.name?.common} has no border countries.
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
+        </>
       )}
     </div>
   );
