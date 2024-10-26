@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { FilterSearchControls, Card, Loader } from "../components";
 import {
+  fetchData,
   filtersCountries,
   getRegion,
   getSubRegions,
@@ -39,8 +40,7 @@ export default function CountriesPage() {
   });
 
   useEffect(() => {
-    fetch("https://restcountries.com/v3.1/all")
-      .then((res) => res.json())
+    fetchData(`${import.meta.env.VITE_SERVER_BASE_URL}/all`)
       .then((data) => {
         setCountries(data);
       })

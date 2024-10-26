@@ -5,6 +5,7 @@ import { Loader } from "../components";
 import { ThemeContext } from "../theme/ThemeContext";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import { fetchData } from "../utils";
 
 export default function CountryDetailsPage() {
   const { id } = useParams();
@@ -14,8 +15,7 @@ export default function CountryDetailsPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`https://restcountries.com/v3.1/alpha/${id}`)
-      .then((res) => res.json())
+    fetchData(`${import.meta.env.VITE_SERVER_BASE_URL}/alpha/${id}`)
       .then((data) => {
         if (data.status === 404 || data.status === 400) navigate("/error");
         setCountry(data[0]);
@@ -83,7 +83,9 @@ export default function CountryDetailsPage() {
                     </p>
                     <p>
                       <span className="font-bold">Population: </span>
-                      {country.population ? country.population : 0}
+                      {country.population
+                        ? country.population?.toLocaleString()
+                        : 0}
                     </p>
                     <p>
                       <span className="font-bold">Region: </span>
