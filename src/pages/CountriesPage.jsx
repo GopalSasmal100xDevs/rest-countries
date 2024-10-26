@@ -35,22 +35,26 @@ export default function CountriesPage() {
     search,
     subregion,
   });
+
   const sortedFilteredCountries = sortCountries({
     countries: filterCountries,
     sortCriteria,
   });
 
   useEffect(() => {
-    fetchData(`${import.meta.env.VITE_SERVER_BASE_URL}/all`)
-      .then((data) => {
-        setCountries(data);
-      })
-      .catch(() => {
-        navigate("/error");
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    function getData() {
+      fetchData(`${import.meta.env.VITE_SERVER_BASE_URL}/all`)
+        .then((data) => {
+          setCountries(data);
+        })
+        .catch(() => {
+          navigate("/error");
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+    getData();
   }, [navigate]);
 
   useEffect(() => {
