@@ -21,7 +21,7 @@ function App() {
 }
 
 function HomePage({ children }) {
-  const { theme } = useContext(ThemeContext);
+  const { theme, setTheme } = useContext(ThemeContext);
   const backgroundColor =
     theme === "dark" ? "hsl(207, 26%, 17%)" : "hsl(0, 0%, 100%)";
   const textColor = theme === "dark" ? "#fff" : "#000";
@@ -34,6 +34,16 @@ function HomePage({ children }) {
   useEffect(() => {
     changeTheme(backgroundColor, textColor);
   }, [theme, backgroundColor, textColor]);
+
+  useEffect(() => {
+    const localTheme = localStorage.getItem("theme");
+    if (!localTheme) {
+      localStorage.setItem("theme", "dark");
+      setTheme("dark");
+    } else {
+      setTheme(localTheme);
+    }
+  }, [setTheme]);
 
   return <div>{children}</div>;
 }

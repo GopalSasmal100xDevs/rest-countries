@@ -1,7 +1,13 @@
 import { useContext } from "react";
 import { ThemeContext } from "../theme/ThemeContext";
 
-export default function SelectItems({ name, onChange, placeholder, options }) {
+export default function SelectItems({
+  name,
+  onChange,
+  placeholder,
+  options,
+  selectedItem,
+}) {
   const { theme } = useContext(ThemeContext);
   const backgroundColor = theme === "dark" ? "bg-darkBlue" : "bg-whiteClr";
   const color = theme === "dark" ? "text-whiteClr" : "text-darkBlue";
@@ -20,6 +26,7 @@ export default function SelectItems({ name, onChange, placeholder, options }) {
           className={`w-full border rounded-md shadow-lg mt-4 ${backgroundColor} ${color} border-none cursor-pointer`}
           style={{ padding: "10px" }}
           onChange={onChange}
+          value={selectedItem}
         >
           <option value="">{placeholder}</option>
           {options.map(({ value, title }, index) =>
