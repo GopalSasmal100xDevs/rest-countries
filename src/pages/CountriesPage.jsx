@@ -7,7 +7,7 @@ import {
   getSubRegions,
   sortCountries,
 } from "../utils";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
 export default function CountriesPage() {
   const [countries, setCountries] = useState([]);
@@ -16,6 +16,7 @@ export default function CountriesPage() {
   const [region, setRegion] = useState("");
   const [subregion, setSubRegion] = useState("");
   const [sortCriteria, setSortCriteria] = useState("");
+  const [urlSearchParams, setUrlSearchParams] = useSearchParams({});
 
   const navigate = useNavigate();
   const regions = getRegion(countries);
@@ -52,6 +53,14 @@ export default function CountriesPage() {
       });
   }, [navigate]);
 
+  useEffect(() => {
+    const urlParams = Object.fromEntries([...urlSearchParams]);
+    if (urlParams.search) setSearch(urlParams.search);
+    if (urlParams.region) setRegion(urlParams.region);
+    if (urlParams.subregion) setSubRegion(urlParams.subregion);
+    if (urlParams.sort) setSortCriteria(urlParams.sort);
+  }, []);
+
   return (
     <div>
       <FilterSearchControls
@@ -62,6 +71,8 @@ export default function CountriesPage() {
         subregions={subregions}
         setSubRegion={setSubRegion}
         setSortCriteria={setSortCriteria}
+        urlSearchParams={urlSearchParams}
+        setUrlSearchParams={setUrlSearchParams}
       />
       {loading ? (
         <Loader />

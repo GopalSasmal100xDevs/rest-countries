@@ -11,6 +11,8 @@ export default function FilterSearchControls({
   subregions,
   setSubRegion,
   setSortCriteria,
+  urlSearchParams,
+  setUrlSearchParams,
 }) {
   const { theme } = useContext(ThemeContext);
   const backgroundColor = theme === "dark" ? "bg-darkBlue" : "bg-whiteClr";
@@ -31,7 +33,13 @@ export default function FilterSearchControls({
           className={`pl-10 pr-4 py-2 w-full border rounded-md shadow-lg mt-4 ${backgroundColor} ${color} border-none`}
           placeholder="Search for a country..."
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => {
+            setSearch(e.target.value);
+            setUrlSearchParams((prev) => ({
+              ...Object.fromEntries([...prev]),
+              search: e.target.value,
+            }));
+          }}
         />
       </div>
 
@@ -40,7 +48,14 @@ export default function FilterSearchControls({
           <SelectItems
             name={""}
             options={allRegions}
-            onChange={(e) => setRegion(e.target.value)}
+            onChange={(e) => {
+              setRegion(e.target.value);
+              setUrlSearchParams((prev) => ({
+                ...Object.fromEntries([...prev]),
+                region: e.target.value,
+              }));
+            }}
+            selectedItem={Object.fromEntries([...urlSearchParams])?.region}
             placeholder="Filter by Region"
             className="rounded-lg shadow-lg w-full"
           />
@@ -49,7 +64,14 @@ export default function FilterSearchControls({
         <div className="px-5">
           <SelectItems
             options={subregions}
-            onChange={(e) => setSubRegion(e.target.value)}
+            onChange={(e) => {
+              setSubRegion(e.target.value);
+              setUrlSearchParams((prev) => ({
+                ...Object.fromEntries([...prev]),
+                subregion: e.target.value,
+              }));
+            }}
+            selectedItem={Object.fromEntries([...urlSearchParams])?.subregion}
             placeholder="Filter by Subregion"
             className="rounded-lg shadow-lg"
           />
@@ -63,7 +85,14 @@ export default function FilterSearchControls({
               { value: "populationASC", title: "Population (Ascending)" },
               { value: "populationDSC", title: "Population (Descending)" },
             ]}
-            onChange={(e) => setSortCriteria(e.target.value)}
+            onChange={(e) => {
+              setSortCriteria(e.target.value);
+              setUrlSearchParams((prev) => ({
+                ...Object.fromEntries([...prev]),
+                sort: e.target.value,
+              }));
+            }}
+            selectedItem={Object.fromEntries([...urlSearchParams])?.sort}
             placeholder="Sort by"
             className="rounded-lg shadow-lg"
           />
