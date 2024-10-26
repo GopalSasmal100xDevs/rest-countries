@@ -59,7 +59,7 @@ export default function CountriesPage() {
     if (urlParams.region) setRegion(urlParams.region);
     if (urlParams.subregion) setSubRegion(urlParams.subregion);
     if (urlParams.sort) setSortCriteria(urlParams.sort);
-  }, []);
+  }, [urlSearchParams]);
 
   return (
     <div>

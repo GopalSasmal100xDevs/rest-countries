@@ -43,7 +43,7 @@ function HomePage({ children }) {
     } else {
       setTheme(localTheme);
     }
-  }, []);
+  }, [setTheme]);
 
   return <div>{children}</div>;
 }
