@@ -1,7 +1,3 @@
-export async function fetchData(url) {
-  return fetch(url).then((res) => res.json());
-}
-
 export function getRegion(countries = []) {
   const res = countries.map(({ region }) => region);
   return Array.from(new Set(res)).map((value) => ({ value, title: value }));
