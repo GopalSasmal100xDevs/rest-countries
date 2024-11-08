@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { FilterSearchControls, Card, Loader } from "../components";
 import {
-  fetchData,
   filtersCountries,
   getRegion,
   getSubRegions,
   sortCountries,
 } from "../utils";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { getCountries } from "../services/countriesService";
 
 export default function CountriesPage() {
   const [countries, setCountries] = useState([]);
@@ -43,7 +43,7 @@ export default function CountriesPage() {
 
   useEffect(() => {
     function getData() {
-      fetchData(`${import.meta.env.VITE_SERVER_BASE_URL}/all`)
+      getCountries()
         .then((data) => {
           setCountries(data);
         })

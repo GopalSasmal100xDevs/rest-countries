@@ -39,28 +39,6 @@ export function filtersCountries({
   });
 }
 
-export function getCountriesLess(countries, setCountries) {
-  const res = countries.reduce(
-    (acc, { name, capital, flags, region, population, cca3, area }) => {
-      acc = [
-        ...acc,
-        {
-          name,
-          capital,
-          flags,
-          region,
-          population,
-          cca3,
-          area,
-        },
-      ];
-      return acc;
-    },
-    []
-  );
-  setCountries(res);
-}
-
 export function sortCountries({ sortCriteria, countries = [] }) {
   return countries.sort((a, b) => {
     switch (sortCriteria) {
